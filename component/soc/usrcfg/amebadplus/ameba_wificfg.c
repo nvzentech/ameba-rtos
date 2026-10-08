@@ -20,7 +20,7 @@ _WEAK void wifi_set_user_config(void)
 	wifi_user_config.softap_addr_offset_idx = 1;
 	wifi_user_config.fast_reconnect_en = 1;
 	wifi_user_config.auto_reconnect_en = 1;
-	wifi_user_config.auto_reconnect_count = 10;
+	wifi_user_config.auto_reconnect_count = 255;    /* retry forever until reconnected */
 	wifi_user_config.auto_reconnect_interval = 5;
 	wifi_user_config.no_beacon_disconnect_time = 9;  /* unit 2s, default 18s */
 
@@ -125,7 +125,7 @@ _WEAK void wifi_set_user_config(void)
 	wifi_user_config.wifi_speaker_feature = 0;
 
 	/*R-mesh*/
-	wifi_user_config.wtn_en = 0;
+	wifi_user_config.wtn_en = 1;
 	wifi_user_config.wtn_strong_rssi_thresh = -50;
 	wifi_user_config.wtn_father_refresh_timeout = 3000;
 	wifi_user_config.wtn_child_refresh_timeout = 4000;

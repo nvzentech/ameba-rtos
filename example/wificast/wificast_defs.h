@@ -16,6 +16,7 @@
 #define WIFI_CAST_OTA_STATUS_REQUEST           BIT(8)
 #define WIFI_CAST_OTA_STATUS_RESPONSE          BIT(7)
 #define WIFI_CAST_OTA_DATA                     BIT(6)
+#define WIFI_CAST_CONTROL_HELLO                BIT(3)
 #define WIFI_CAST_DEBUG_COMMAND                BIT(5)
 #define WIFI_CAST_DEBUG_LOG                    BIT(4)
 

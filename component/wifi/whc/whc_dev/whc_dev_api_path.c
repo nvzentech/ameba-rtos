@@ -7,6 +7,7 @@
  *  possession or use of this module requires written permission of RealTek.
  */
 #include "whc_dev.h"
+#include "wifi_api_wtn.h"
 
 extern int wifi_set_chplan(u8 chplan);
 void rtw_sme_auth_event(struct rtw_sme_auth_info *auth_info);
@@ -15,6 +16,36 @@ void rtw_sme_set_deauth_ie(u8 *ie, u32 ie_len, u16 reason_code);
 
 
 struct event_priv_t event_priv;
+
+/* --- Manually mapped R-Mesh API wrappers --- */
+void whc_event_wtn_get_node_info(u32 api_id, u32 *param_buf)
+{
+	int ret;
+	int type = (int)param_buf[0];
+	void *node_info = (void *)param_buf[1];
+
+	ret = wifi_rmesh_get_node_info(type, node_info);
+	whc_send_api_ret_value(api_id, (u8 *)&ret, sizeof(ret));
+}
+
+void whc_event_wtn_get_child_num(u32 api_id, u32 *param_buf)
+{
+	(void)param_buf;
+	int ret = 0;
+	ret = (int)wifi_rmesh_get_child_num();
+	whc_send_api_ret_value(api_id, (u8 *)&ret, sizeof(ret));
+}
+
+void whc_event_wtn_get_child_mac_list(u32 api_id, u32 *param_buf)
+{
+	int ret;
+	u8 *child_num = (u8 *)param_buf[0];
+	void *child_info_list = (void *)param_buf[1];
+
+	ret = wifi_rmesh_get_child_info_list(child_num, child_info_list);
+	whc_send_api_ret_value(api_id, (u8 *)&ret, sizeof(ret));
+}
+/* ------------------------------------------- */
 
 const struct event_func_t whc_dev_api_handlers[] = {
 #if !defined(CONFIG_MP_SHRINK)
@@ -89,6 +120,9 @@ const struct event_func_t whc_dev_api_handlers[] = {
 #ifdef CONFIG_WHCH
 	{WHC_API_WIFI_WHCH_STATES_SYNC, whc_event_wifi_stats_update},
 #endif
+	{WHC_API_WTN_GET_NODE_INFO, whc_event_wtn_get_node_info},
+	{WHC_API_WTN_GET_CHILD_NUM, whc_event_wtn_get_child_num},
+	{WHC_API_WTN_GET_CHILD_MAC_LIST, whc_event_wtn_get_child_mac_list},
 #endif
 	{WHC_API_WIFI_ON,	whc_event_wifi_on},
 	{WHC_API_WIFI_DRIVE_IS_MP,	whc_event_wifi_driver_is_mp},

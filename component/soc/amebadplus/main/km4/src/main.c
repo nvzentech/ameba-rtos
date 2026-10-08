@@ -15,12 +15,16 @@
 #include "rtw_coex_ipc.h"
 #endif
 #include "ameba_diagnose.h"
+#include "gpio_api.h"
+#include "gpio_irq_api.h"
 
 static const char *const TAG = "MAIN";
 
 #if (defined(CONFIG_BT) && CONFIG_BT) && (defined(CONFIG_BT_INIC) && CONFIG_BT_INIC)
 #include "bt_inic.h"
 #endif
+
+#define TEST_GPIO_PIN    PB_17
 
 void app_init_debug(void)
 {
@@ -174,6 +178,8 @@ _WEAK void app_example(void)
 int main(void)
 {
 	RTK_LOGI(TAG, "KM4 MAIN \n");
+
+
 	ameba_rtos_get_version();
 	/* Debug log control */
 	app_init_debug();
